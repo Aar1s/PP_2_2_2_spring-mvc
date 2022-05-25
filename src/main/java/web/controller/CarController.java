@@ -17,12 +17,17 @@ import java.util.Objects;
 
 @Controller
 public class CarController {
-    @Autowired
+
     CarServiceImpl carService;
+
+    @Autowired
+    public CarController(CarServiceImpl carService) {
+        this.carService = carService;
+    }
+
     @GetMapping(value = "/cars")
-    public String CarList(@RequestParam(value = "count",required = false) Integer count, Model model) {
-        List<Car> cars = null;
-        cars = carService.getCars(Objects.requireNonNullElse(count, 5));
+    public String showCarList(@RequestParam(value = "count",required = false) Integer count, Model model) {
+        List<Car>cars = carService.getCars(Objects.requireNonNullElse(count, 5));
         model.addAttribute("cars", cars);
         return "cars";
     }
